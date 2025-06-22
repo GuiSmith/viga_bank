@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import banco from '../banco.js';
-import nossoNumeroGeradorHook from '../hooks/nossoNumeroGeradorHook.js';
 
 //Modelos
 import CidadeModel from './cidadeModel.js';
@@ -42,8 +41,8 @@ const BoletoModel = banco.define('boleto', {
         allowNull: false
     },
     nosso_numero: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: true,
         unique: true
     },
     observacoes: {
@@ -174,7 +173,5 @@ BoletoModel.associate = (models) => {
         }
     });
 };
-
-nossoNumeroGeradorHook(BoletoModel);
 
 export default BoletoModel;
