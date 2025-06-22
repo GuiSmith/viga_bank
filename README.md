@@ -1,5 +1,5 @@
-# Biblioteca
-Biblioteca para disciplina de Programacão 1 - Sistemas Unoesc
+# Integração VigaBank
+Sistema de meios de pagamento para disciplina de Programacão 1 - Sistemas Unoesc
 
 # Configuração de Ambiente
 ## Banco de Dados - PostgreSQL
