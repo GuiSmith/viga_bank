@@ -42,7 +42,7 @@ const BeneficiarioModel = banco.define("beneficiario", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    codigoBeneficiario: {
+    convenio: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
@@ -69,11 +69,6 @@ const BeneficiarioModel = banco.define("beneficiario", {
         allowNull: false,
         defaultValue: 0
     },
-    nosso_numero_contador: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-    }
 });
 
 BeneficiarioModel.beforeUpdate(async (beneficiario, options) => {
