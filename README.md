@@ -2,6 +2,7 @@
 Sistema de meios de pagamento para disciplina de Programacão 1 - Sistemas Unoesc
 
 # Configuração de Ambiente
+
 ## Banco de Dados - PostgreSQL
 
 Considerando um ambiente Linux Ubuntu:
@@ -86,4 +87,44 @@ Tenha certeza de que não há nenhum outro serviço escutando a porta no arquivo
 5. **Inicie o projeto**
 ```bash
 npm start
+```
+
+# Padrão de resposta da API
+
+## Listagem
+
+## Selecionar
+
+## Edição
+
+## Funcionalidade específica
+
+## Deleção
+
+## Erros
+
+### Erros esperados
+Erros esperados são ações que não foram realizadas por razões diversas, como regra de negócio, erro de envio da requisição,etc.
+
+O padrão de retorno da API para erros esperados será sempre:
+1. body: Será o corpo que foi informado na requisição
+2. mensagem: mensagem do porque a ação não foi realizada
+
+OBS: Quando um body não for informado, o body será um objeto vazio
+``` bash
+{
+    body: {...}
+    mensagem: 'mensagem de erro aqui'
+}
+```
+### Erros Inesperados
+Erros inesperados são ações que não foram realizadas por erros não conhecidos e previstos pelos desenvolvedores da API.
+
+
+O Padrão de retorno da API para erros inesperados será SEMPRE:
+1. mensagem: erro interno
+``` bash
+{
+    mensagem: 'Erro interno, contate o suporte'
+}
 ```
