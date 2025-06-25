@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import banco from "../banco.js";
 import { v4 as uuidv4 } from "uuid";
+import { validate as uuidValidate } from "uuid";
 
 const TokenLoginModel = banco.define("token_login", {
     id: {
@@ -41,7 +42,11 @@ const TokenLoginModel = banco.define("token_login", {
 });
 
 TokenLoginModel.beforeCreate(async (tokenInstance) => {
-    tokenInstance.token = uuidv4();
+    const newToken = await uuidv4();
+    if (!uuidValidate(newToken)) {
+        throw new Error("Generated UUID is invalid");
+    }
+    tokenInstance.token = newToken;
 });
 
 TokenLoginModel.associate = (models) => {
