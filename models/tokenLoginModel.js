@@ -16,7 +16,6 @@ const TokenLoginModel = banco.define("token_login", {
     },
     token: {
         type: DataTypes.STRING,
-        allowNull: false,
         unique: true,
         validate: {
             notEmpty: true
