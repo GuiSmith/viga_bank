@@ -26,6 +26,16 @@ const BoletoModel = banco.define('boleto', {
         allowNull: false,
         defaultValue: DataTypes.NOW
     },
+    status: {
+        type: DataTypes.ENUM('A', 'R', 'C'),
+        allowNull: false,
+        defaultValue: 'A'
+    },
+    id_parcelamento: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        unique: true,
+    },
     parcelado: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
@@ -65,7 +75,7 @@ const BoletoModel = banco.define('boleto', {
     endereco_beneficiario_bairro: DataTypes.STRING,
     endereco_beneficiario_cidade: DataTypes.STRING,
     endereco_beneficiario_id_cidade: DataTypes.INTEGER,
-    endereco_beneficiario_uf: DataTypes.STRING,
+    endereco_beneficiario_uf: DataTypes.CHAR(2),
     endereco_beneficiario_cep: DataTypes.STRING,
 
     // Snapshot do pagador
@@ -82,8 +92,8 @@ const BoletoModel = banco.define('boleto', {
     endereco_pagador_complemento: DataTypes.STRING,
     endereco_pagador_bairro: DataTypes.STRING,
     endereco_pagador_cidade: DataTypes.STRING,
-    endereco_pagador_cidade: DataTypes.INTEGER,
-    endereco_pagador_uf: DataTypes.STRING,
+    endereco_pagador_id_cidade: DataTypes.INTEGER,
+    endereco_pagador_uf: DataTypes.CHAR(2),
     endereco_pagador_cep: DataTypes.STRING,
 
     // Dados do banco emissor
@@ -103,7 +113,7 @@ const BoletoModel = banco.define('boleto', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    cod_convenio: {
+    convenio: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
