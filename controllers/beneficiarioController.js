@@ -43,7 +43,6 @@ async function login(req, res){
             body: req.body,
             mensagem: `E-mail ou senha inválidos`
         });
-
     } catch (error) {
         console.error('Erro ao realizar login:');
         console.log(error);
