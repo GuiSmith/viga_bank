@@ -92,15 +92,46 @@ npm start
 # Padrão de resposta da API
 
 ## Listagem
+O padrão de resposta para listagem será um array de objetos
 
+Exemplo:
+``` json
+    [
+        {...}
+        {...}
+        {...}
+    ]
+```
 ## Selecionar
+O padrão de resposta para seleção será sempre um objeto
 
+Exemplo:
+``` json
+    {...}
+```
 ## Edição
+O padrão de resposta para seleção será sempre o objeto atualizado
 
+Exemplo:
+``` json
+    {...}
+``` 
 ## Funcionalidade específica
+Para cada funcionalidade específica, o retorno esperado será listado a seguir, contate nossos administradores para casos onde o padrão divergir da realidade
+### Login
+Deve retornar um objeto com a chave `token` seguido do token a ser usado nas requisições
 
+Exemplo:
+``` json
+    { "token": "..." }
+```
 ## Deleção
+O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
+Exemplo:
+``` json
+    { "mensagem": "Registro deletado com sucesso" }
+```
 ## Erros
 
 ### Erros esperados
