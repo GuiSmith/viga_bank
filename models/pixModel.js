@@ -12,6 +12,19 @@ const PixModel = banco.define('pix', {
         type: DataTypes.ENUM('cc','qr'),
         allowNull: false,
     },
+    valor: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        validate: {
+            isDecimal: true,
+            min: 0.01
+        }
+    },
+    status: {
+        type: DataTypes.ENUM('R','A','C'),
+        allowNull: false,
+        defaultValue: 'A'
+    },
     cod: {
         type: DataTypes.STRING,
         unique: true,
