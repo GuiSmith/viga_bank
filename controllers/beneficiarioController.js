@@ -26,7 +26,7 @@ async function login(req, res){
             where: { email }
         });
 
-        if(beneficiario && beneficiario.compararSenha(senha)){
+        if(beneficiario && await beneficiario.compararSenha(senha)){
             const tokenLoginData = {
                 id_beneficiario: beneficiario.id,
             };
@@ -37,7 +37,6 @@ async function login(req, res){
                     token: tokenLogin.token
                 });
             }
-
         }
 
         return res.status(401).json({ mensagem: `E-mail ou senha inválidos` });
