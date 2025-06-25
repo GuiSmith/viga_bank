@@ -7,6 +7,7 @@ import TokenApiModel from './tokenApiModel.js';
 import PixModel from './pixModel.js';
 import CobrancaCartaoModel from './cobrancaCartaoModel.js';
 import BoletoModel from './boletoModel.js';
+import ParcelamentoModel from './parcelamentoModel.js';
 
 const models = {
     Cidade: CidadeModel,
@@ -16,7 +17,8 @@ const models = {
     TokenApi: TokenApiModel,
     Pix: PixModel,
     CobrancaCartao: CobrancaCartaoModel,
-    Boleto: BoletoModel
+    Boleto: BoletoModel,
+    Parcelamento: ParcelamentoModel
 };
 
 // Registra associações

@@ -33,18 +33,12 @@ const BoletoModel = banco.define('boleto', {
     },
     id_parcelamento: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
-        unique: true,
-    },
-    parcelado: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+        allowNull: true,
     },
     numero_parcela: {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-
     // Informações do boleto
     especie: {
         type: DataTypes.STRING,
@@ -180,6 +174,13 @@ BoletoModel.associate = (models) => {
         foreignKey: {
             name: 'endereco_pagador_id_cidade',
             allowNull: false
+        }
+    });
+
+    BoletoModel.belongsTo(models.Parcelamento, {
+        foreignKey: {
+            name: 'id_parcelamento',
+            allowNull: true
         }
     });
 };

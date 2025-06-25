@@ -44,8 +44,7 @@ const BeneficiarioModel = banco.define("beneficiario", {
     },
     convenio: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: true,
     },
     email: {
         type: DataTypes.STRING,
@@ -69,6 +68,11 @@ const BeneficiarioModel = banco.define("beneficiario", {
         allowNull: false,
         defaultValue: 0
     },
+    id_parcelamento_contador: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }
 });
 
 BeneficiarioModel.beforeUpdate(async (beneficiario, options) => {

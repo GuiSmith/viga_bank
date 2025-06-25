@@ -39,7 +39,10 @@ async function login(req, res){
             }
         }
 
-        return res.status(401).json({ mensagem: `E-mail ou senha inválidos` });
+        return res.status(401).json({
+            body: req.body,
+            mensagem: `E-mail ou senha inválidos`
+        });
 
     } catch (error) {
         console.error('Erro ao realizar login:');
