@@ -1,4 +1,5 @@
 import Beneficiario from '../models/beneficiarioModel.js';
+import TokenLoginModel from '../models/tokenLoginModel.js';
 
 // Lista todos os beneficiários
 async function listar(req, res) {
@@ -17,4 +18,35 @@ async function listar(req, res) {
     }
 }
 
-export default { listar};
+async function login(req, res){
+    try {
+        const { email, senha } = req.body;
+
+        const beneficiario = await Beneficiario.findOne({
+            where: { email }
+        });
+
+        if(beneficiario && beneficiario.compararSenha(senha)){
+            const tokenLoginData = {
+                id_beneficiario: beneficiario.id,
+            };
+            const tokenLogin = await TokenLoginModel.create(tokenLoginData);
+
+            if(tokenLogin){
+                return res.status(200).json({
+                    token: tokenLogin.token
+                });
+            }
+
+        }
+
+        return res.status(401).json({ mensagem: `E-mail ou senha inválidos` });
+
+    } catch (error) {
+        console.error('Erro ao realizar login:');
+        console.log(error);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    }
+}
+
+export default { listar, login };

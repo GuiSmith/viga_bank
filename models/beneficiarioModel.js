@@ -17,7 +17,7 @@ const BeneficiarioModel = banco.define("beneficiario", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    cpfCnpj: {
+    cpf_cnpj: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -26,11 +26,11 @@ const BeneficiarioModel = banco.define("beneficiario", {
             is: /^\d+$/i
         }
     },
-    codigoBanco: {
+    codigo_banco: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    nomeBanco: {
+    nome_banco: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -38,11 +38,11 @@ const BeneficiarioModel = banco.define("beneficiario", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    numeroConta: {
+    numero_conta: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    codigoBeneficiario: {
+    codigo_beneficiario: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
@@ -86,8 +86,13 @@ BeneficiarioModel.beforeCreate(async (beneficiario) => {
     beneficiario.senha = await bcrypt.hash(beneficiario.senha,10)
 });
 
-BeneficiarioModel.prototype.compararSenha = async (senhaTextoPuro) => {
-    return await bcrypt.compare(senhaTextoPuro, this.senha);
+BeneficiarioModel.prototype.compararSenha = async function(senhaTextoPuro) {
+    try {
+        return await bcrypt.compare(senhaTextoPuro, this.dataValues.senha);
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 }
 
 export default BeneficiarioModel;
