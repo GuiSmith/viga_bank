@@ -2,10 +2,12 @@
 import express from "express";
 import sequelize from "./banco.js";
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
+import auth from "./middlewares/auth.js";
 // import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(auth);
 const PORT = process.env.PORT || 5000;
 
 // Conexão com o banco de dados
