@@ -2,10 +2,13 @@
 import express from "express";
 import sequelize from "./banco.js";
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
+import tokenApiRoutes from './routes/tokenApiRoutes.js';
+import auth from "./middlewares/auth.js";
 // import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(auth);
 const PORT = process.env.PORT || 5000;
 
 // Conexão com o banco de dados
@@ -35,5 +38,6 @@ app.get("/", (req, res) => {
 
 //Rotas Beneficiários
 app.use("/beneficiarios", beneficiarioRoutes);
+app.use('/token', tokenApiRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
