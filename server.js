@@ -2,6 +2,7 @@
 import express from "express";
 import sequelize from "./banco.js";
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
+import tokenApiRoutes from './routes/tokenApiRoutes.js';
 import auth from "./middlewares/auth.js";
 // import cors from "cors";
 
@@ -37,5 +38,6 @@ app.get("/", (req, res) => {
 
 //Rotas Beneficiários
 app.use("/beneficiarios", beneficiarioRoutes);
+app.use('/token', tokenApiRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
