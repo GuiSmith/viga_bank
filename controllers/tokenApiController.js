@@ -16,4 +16,27 @@ async function listar(req, res) {
     }
 }
 
-export default { listar, };
+async function selecionar (req, res) {
+    try {
+        const idToken = req.params.id || undefined;
+        const beneficiario = req.beneficiario;
+        if(!idToken){
+            return res.status(400).json({ mensagem: 'ID do token não informado' });
+        }
+
+        const token = await tokenApiModel.findOne({
+            where: { id: idToken, id_beneficiario: beneficiario.id }
+        });
+
+        if (!token) {
+            return res.status(404).json({ mensagem: 'Token não encontrado' });
+        }
+
+        return res.status(200).json(token);
+    } catch(error) {
+        console.error('Erro ao selecionar token de API:', error);
+        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    }
+}
+
+export default { listar, selecionar };
