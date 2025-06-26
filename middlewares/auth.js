@@ -66,7 +66,9 @@ const auth = async (req, res, next) => {
             next();
         }
 
-        return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
+        if (!tokenLogin && !tokenApi) {
+            return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
+        }
 
     } catch (error) {
         console.error('Erro ao validar o token:', error);
