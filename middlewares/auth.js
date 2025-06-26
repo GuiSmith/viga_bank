@@ -1,4 +1,5 @@
 import TokenLoginModel from "../models/tokenLoginModel.js";
+import tokenApiModel from '../models/tokenApiModel.js';
 import BeneficiarioModel from "../models/beneficiarioModel.js";
 
 const publicRoutes = [
@@ -10,7 +11,7 @@ const tokenLoginExpiracaoHoras = 3;
 const tokenLoginExpiracaoMMs = tokenLoginExpiracaoHoras * 60 * 60 * 1000;
 
 const auth = async (req, res, next) => {
-    const isPublicRoute = publicRoutes.some(route => 
+    const isPublicRoute = publicRoutes.some(route =>
         route.path === req.path && route.method === req.method
     );
 
@@ -25,27 +26,48 @@ const auth = async (req, res, next) => {
     }
 
     try {
+        // Lógica para tokens de login
         const tokenLogin = await TokenLoginModel.findOne({ where: { token } });
 
-        if (!tokenLogin) {
-            return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
+        if (tokenLogin) {
+            const dataHoraExpiracao = new Date(new Date() - tokenLoginExpiracaoMMs);
+            const dataHoraCadastro = new Date(tokenLogin.data_cadastro);
+
+            if (dataHoraCadastro < dataHoraExpiracao || tokenLogin.ativo === false) {
+                return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
+            }
+
+            const beneficiario = await BeneficiarioModel.findByPk(tokenLogin.id_beneficiario);
+
+            if (!beneficiario) {
+                return res.status(404).json({ mensagem: 'Beneficiário não encontrado' });
+            }
+
+            req.beneficiario = beneficiario;
+            next();
         }
 
-        const dataHoraExpiracao = new Date(new Date() - tokenLoginExpiracaoMMs);
-        const dataHoraCadastro = new Date(tokenLogin.data_cadastro);
+        // Lógica para tokens de API
+        const tokenApi = await tokenApiModel.findOne({ where: { token } });
 
-        if(dataHoraCadastro < dataHoraCadastro) {
-            return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
+        if (tokenApi) {
+
+            if (tokenApi.ativo === false) {
+                return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
+            }
+
+            const beneficiario = await BeneficiarioModel.findByPk(tokenApi.id_beneficiario);
+
+            if (!beneficiario) {
+                return res.status(404).json({ mensagem: 'Beneficiário não encontrado' });
+            }
+
+            req.beneficiario = beneficiario;
+            next();
         }
 
-        const beneficiario = await BeneficiarioModel.findByPk(tokenLogin.id_beneficiario);
+        return res.status(401).json({ mensagem: 'Token inválido ou expirado' });
 
-        if (!beneficiario) {
-            return res.status(404).json({ mensagem: 'Beneficiário não encontrado' });
-        }
-
-        req.beneficiario = beneficiario;
-        next();
     } catch (error) {
         console.error('Erro ao validar o token:', error);
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
