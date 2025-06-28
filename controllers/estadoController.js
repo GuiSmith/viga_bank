@@ -54,23 +54,19 @@ const sincronizarEstados = async (req, res) => {
 
         const codsIbgeSistema = new Set(estadosSistema.map(estadoSistema => estadoSistema.cod_ibge));
 
-        console.log(`codsIbgeSistema: ${codsIbgeSistema}`);
-
         const novosEstados = estadosIBGE.filter(estadoIbge => !codsIbgeSistema.has(estadoIbge.id));
-
-        console.log(`Novos estados a serem adicionados: ${novosEstados}`);
 
         if(novosEstados.length == 0){
             return res.status(200).json({ mensagem: "Nenhum estado novo a ser adicionado" });
         }
 
-        await EstadoModel.bulkCreate(novosEstados.map(novoEstado => ({
+        const novosEstadosCriados = await EstadoModel.bulkCreate(novosEstados.map(novoEstado => ({
             sigla: novoEstado.sigla,
             cod_ibge: novoEstado.id,
             nome: novoEstado.nome
         })));
 
-        return res.status(201).json({ mensagem: `${novosEstados.length} novos estados criados!` }); 
+        return res.status(201).json(novosEstadosCriados); 
 
     } catch (error) {
         console.error("Erro ao sincronizar estados:", error);
