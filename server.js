@@ -4,10 +4,13 @@ import sequelize from "./banco.js";
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
 import tokenApiRoutes from './routes/tokenApiRoutes.js';
 import auth from "./middlewares/auth.js";
-// import cors from "cors";
+import cors from "cors";
+
+import corsMiddlware from "./middlewares/cors.js";
 
 const app = express();
 app.use(express.json());
+app.use(cors(corsMiddlware));
 app.use(auth);
 const PORT = process.env.PORT || 5000;
 
