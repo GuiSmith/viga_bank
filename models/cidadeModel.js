@@ -17,7 +17,7 @@ const CidadeModel = banco.define('cidade', {
         allowNull: false,
     },
     cod_ibge: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     data_cadastro: { 

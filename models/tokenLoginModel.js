@@ -41,9 +41,9 @@ const TokenLoginModel = banco.define("token_login", {
 });
 
 TokenLoginModel.beforeCreate(async (tokenInstance) => {
-    const newToken = await uuidv4();
+    const newToken = uuidv4();
     if (!uuidValidate(newToken)) {
-        throw new Error("Generated UUID is invalid");
+        throw new Error("UUID gerado é inválido");
     }
     tokenInstance.token = newToken;
 });

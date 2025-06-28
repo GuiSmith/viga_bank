@@ -1,15 +1,27 @@
-// Bibliotecas
+// Importação de bibliotecas
 import express from "express";
+import cors from "cors";
+
+// Importação de configurações gerais
 import sequelize from "./banco.js";
+
+//Importação de Middlewares
+import corsMiddlware from "./middlewares/cors.js";
+import auth from "./middlewares/auth.js";
+
+// Importação de Rotas
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
 import tokenApiRoutes from './routes/tokenApiRoutes.js';
-import auth from "./middlewares/auth.js";
-// import cors from "cors";
+import cidadeRoutes from './routes/cidadeRoutes.js';
+import estadoRoutes from './routes/estadoRoutes.js';
 
+// Configurando express app
 const app = express();
 app.use(express.json());
+app.use(cors(corsMiddlware));
 app.use(auth);
-const PORT = process.env.PORT || 5000;
+
+const PORT = process.env.PORT || 5000; // Pega porta do processo (se em produção), se não pega porta 5000
 
 // Conexão com o banco de dados
 let dbConnection = false;
@@ -36,8 +48,10 @@ app.get("/", (req, res) => {
   }
 });
 
-//Rotas Beneficiários
+//Rotas
 app.use("/beneficiarios", beneficiarioRoutes);
 app.use('/token', tokenApiRoutes);
+app.use('/cidades', cidadeRoutes);
+app.use('/estados', estadoRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

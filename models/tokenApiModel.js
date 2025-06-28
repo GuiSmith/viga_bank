@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import banco from "../banco.js";
 import { v4 as uuidv4 } from "uuid";
+import { validate as uuidValidate } from "uuid";
 
 const TokenLoginModel = banco.define("token_api", {
     id: {
@@ -35,6 +36,10 @@ const TokenLoginModel = banco.define("token_api", {
 });
 
 TokenLoginModel.beforeCreate(async (tokenInstance) => {
+    const newToken = uuidv4();
+    if(!uuidValidate(newToken)){
+        throw new Error("UUID gerado é inválido");
+    }
     tokenInstance.token = uuidv4();
 });
 
