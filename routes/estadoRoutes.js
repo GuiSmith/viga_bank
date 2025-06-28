@@ -4,5 +4,6 @@ import estadoController from '../controllers/estadoController.js';
 const router = express.Router();
 
 router.get('/', estadoController.listar);
+router.get('/:id', estadoController.selecionar);
 
 export default router;

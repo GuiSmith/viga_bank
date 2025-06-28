@@ -5,7 +5,6 @@ import CidadeModel from "../models/cidadeModel.js";
 import IbgeService from "../services/ibgeService.js";
 
 // Listar estados
-
 const listar = async (req, res) => {
     try {
         const estados = await CidadeModel.findAll();
@@ -20,4 +19,22 @@ const listar = async (req, res) => {
     }
 }
 
-export default { listar };
+// Selecionar estado por ID
+const selecionar = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (isNaN(Number(id))) {
+            return res.status(400).json({ mensagem: "ID inválido, deve ser um número" });
+        }
+        const estado = await CidadeModel.findByPk(id);
+        if (!estado) {
+            return res.status(404).json({ mensagem: "Estado não encontrado" });
+        }
+        res.status(200).json(estado);
+    } catch (error) {
+        console.error("Erro ao selecionar estado:", error);
+        res.status(500).json({ mensagem: "Erro interno, contate o suporte" });
+    }
+};
+
+export default { listar, selecionar };
