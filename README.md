@@ -126,18 +126,49 @@ Exemplo:
     { "token": "..." }
 ```
 ### Sincronizar Estados
-Deve retornar um objeto com a chave `mensagem` informando quantos estados foram criados ou que nenhum estado precisou ser criado.
+Deve retornar um array com os objetos das cidades criadas ou uma mensagem informando que nenhuma cidade nova foi criada.
 
 Possíveis responses HTTP:
 1. 201: Para quando algum estado foi criado
+``` json
+    [
+        {...},
+        {...}
+    ]
+```
 2. 200: Para quando nenhum estado precisou ser criado
+``` json
+    {
+        "mensagem":"Nenhuma estado novo a ser criado"
+    }
+```
 3. 503: Para quando a API do IBGE estiver indisponível
 OBS: em casos de erros ou autorização, segue o padrão descrito em [Erros](##Erros)
-
-Exemplo:
+### Sincronizar cidades
+Deve retornar um array com os objetos das cidades criadas ou uma mensagem informando que nenhuma cidade nova foi criada.
+Possíveis responses HTTP:
+1. 201: Para quando alguma cidade foi criada
 ``` json
-    { "mensagem": "27 estados foram criados!" }
+    [
+        {...},
+        {...}
+    ]
 ```
+2. 200: Para quando nenhuma cidade precisou ser criada
+``` json
+    {
+        "mensagem":"Nenhuma cidade nova a ser criada"
+    }
+```
+3. 503: Para quando a API do IBGE estiver indisponível
+``` json
+    { "mensagem": "API do IBGE não está disponível" }
+```
+4. 409: Para quando não houver estados cadastrados
+``` json
+    { "mensagem": "Sincronize os estados antes de sincronizar cidades!" }
+```
+OBS: em casos de erros ou autorização, segue o padrão descrito em [Erros](##Erros)
 ## Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
@@ -158,6 +189,7 @@ OBS: Quando um body não for informado, o body será um objeto vazio
 ``` bash
 {
     body: {...}
+    detalhes: {...}
     mensagem: 'mensagem de erro aqui'
 }
 ```
