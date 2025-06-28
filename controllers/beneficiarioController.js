@@ -18,6 +18,29 @@ async function listar(req, res) {
     }
 }
 
+//Selecionar beneficiário por ID
+async function selecionar(req, res) {
+    try {
+        const id = req.params.id;
+        const beneficiario = await Beneficiario.findByPk(id);
+        
+        if (!beneficiario) {
+            return res.status(404).json({
+                body: {},
+                detalhes: {},
+                mensagem: 'Beneficiário não encontrado'
+            });
+        }
+
+        return res.status(200).json(beneficiario);
+
+    } catch (error) {
+        console.error('Erro ao selecionar beneficiário:', error);
+        return res.status(500).json({ mensagem: 'Erro interno, contate o suporte' });
+    }
+}
+
+
 async function login(req, res){
     try {
         const { email, senha } = req.body;
@@ -50,4 +73,4 @@ async function login(req, res){
     }
 }
 
-export default { listar, login };
+export default { listar, selecionar, login };
