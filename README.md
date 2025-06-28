@@ -125,6 +125,19 @@ Exemplo:
 ``` json
     { "token": "..." }
 ```
+### Sincronizar Estados
+Deve retornar um objeto com a chave `mensagem` informando quantos estados foram criados ou que nenhum estado precisou ser criado.
+
+Possíveis responses HTTP:
+1. 201: Para quando algum estado foi criado
+2. 200: Para quando nenhum estado precisou ser criado
+3. 503: Para quando a API do IBGE estiver indisponível
+OBS: em casos de erros ou autorização, segue o padrão descrito em [Erros](##Erros)
+
+Exemplo:
+``` json
+    { "mensagem": "27 estados foram criados!" }
+```
 ## Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
