@@ -12,6 +12,7 @@ import auth from "./middlewares/auth.js";
 // Importação de Rotas
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
 import tokenApiRoutes from './routes/tokenApiRoutes.js';
+import cidadeRoutes from './routes/cidadeRoutes.js';
 
 // Configurando express app
 const app = express();
@@ -49,5 +50,6 @@ app.get("/", (req, res) => {
 //Rotas
 app.use("/beneficiarios", beneficiarioRoutes);
 app.use('/token', tokenApiRoutes);
+app.use('/cidades', cidadeRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
