@@ -18,6 +18,9 @@ const listar = async (req, res) => {
 const selecionar = async (req, res) => {
     try {
         const { id } = req.params;
+        if (isNaN(Number(id))) {
+            return res.status(400).json({ mensagem: 'ID inválido' });
+        }
         const cidade = await CidadeModel.findByPk(id);
         if (!cidade) {
             return res.status(404).json({ mensagem: 'Cidade não encontrada' });
