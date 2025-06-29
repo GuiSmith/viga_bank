@@ -3,6 +3,7 @@ const IBGE_API_BASE = 'https://servicodados.ibge.gov.br/api/v1/localidades';
 // Checar disponibilidade da API do IBGE
 const checarDisponibilidade = async () => {
     try {
+        console.log('fetch: ', typeof fetch, fetch);
         const response = await fetch(`${IBGE_API_BASE}`);
         return response.ok;
     } catch (error) {

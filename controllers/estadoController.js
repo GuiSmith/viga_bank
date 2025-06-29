@@ -1,5 +1,5 @@
 // Importação de modelos
-import EstadoModel from "../models/estadoModel.js";
+import EstadoModel from "../banco/models/estadoModel.js";
 
 // Importação de serviços
 import IbgeService from "../services/ibgeService.js";

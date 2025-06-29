@@ -1,6 +1,6 @@
-import TokenLoginModel from "../models/tokenLoginModel.js";
-import tokenApiModel from '../models/tokenApiModel.js';
-import BeneficiarioModel from "../models/beneficiarioModel.js";
+import TokenLoginModel from "../banco/models/tokenLoginModel.js";
+import tokenApiModel from '../banco/models/tokenApiModel.js';
+import BeneficiarioModel from "../banco/models/beneficiarioModel.js";
 
 const publicRoutes = [
     { path: '/beneficiarios/login', method: 'POST' },

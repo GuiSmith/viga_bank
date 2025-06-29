@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import banco from '../banco.js';
-import chargeIdGerador from '../hooks/chargeIdGeradorHook.js';
+import chargeIdGerador from '../../hooks/chargeIdGeradorHook.js';
 
 const cobrancaCartaoModel = banco.define('cobranca_cartao', {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },

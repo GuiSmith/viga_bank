@@ -36,11 +36,18 @@ const TokenLoginModel = banco.define("token_api", {
 });
 
 TokenLoginModel.beforeCreate(async (tokenInstance) => {
-    const newToken = uuidv4();
-    if(!uuidValidate(newToken)){
-        throw new Error("UUID gerado é inválido");
+    // Verificar se o token já existe
+    while (true) {
+        const newToken = uuidv4();
+        if (!uuidValidate(newToken)) {
+            throw new Error("UUID gerado é inválido");
+        }
+        const existingToken = await TokenLoginModel.findOne({ where: { token: newToken } });
+        if (!existingToken) {
+            tokenInstance.token = newToken;
+            break;
+        }
     }
-    tokenInstance.token = uuidv4();
 });
 
 TokenLoginModel.associate = (models) => {

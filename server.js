@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 
 // Importação de configurações gerais
-import sequelize from "./banco.js";
+import sequelize from "./banco/banco.js";
 
 //Importação de Middlewares
 import corsMiddlware from "./middlewares/cors.js";
