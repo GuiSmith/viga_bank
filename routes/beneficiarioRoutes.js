@@ -1,6 +1,6 @@
 import express from "express";
 import beneficiarioController from "../controllers/beneficiarioController.js";
-import auth from "../middlewares/auth.js";
+import auth from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 

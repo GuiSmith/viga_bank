@@ -1,10 +1,14 @@
-import Beneficiario from "../models/beneficiarioModel.js";
-import TokenLoginModel from "../models/tokenLoginModel.js";
+import Beneficiario from "../banco/models/beneficiarioModel.js";
+import TokenLoginModel from "../banco/models/tokenLoginModel.js";
 
 //Selecionar beneficiário por ID
 async function selecionar(req, res) {
   try {
-    return res.status(200).json(beneficiario);
+    const beneficiario = req.beneficiario;
+    const dadosBeneficiario = beneficiario.get({ plain: true });
+    delete dadosBeneficiario.senha;
+
+    return res.status(200).json(dadosBeneficiario);
   } catch (error) {
     console.error("Erro ao selecionar beneficiário:", error);
     return res
@@ -82,9 +86,11 @@ async function criar(req, res) {
     }
 
     const novoBeneficiario = await Beneficiario.create(dadosRecebidos);
+    const dadosNovoBeneficiario = novoBeneficiario.get({ plain: true });
+    delete dadosNovoBeneficiario.senha;
 
     return res.status(201).json({
-      body: novoBeneficiario,
+      body: dadosNovoBeneficiario,
       detalhes: {
         id: novoBeneficiario.id,
         data_cadastro: novoBeneficiario.data_cadastro,
