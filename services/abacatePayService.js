@@ -7,11 +7,17 @@ import { erroPersonalizado } from '../utils/erros.js';
 // Configurando bibliotecas
 dotenv.config();
 
-const apiUrl = `https://api.abacatepay.com/v1/pixQrCode/create`;
+const apiUrl = `https://api.abacatepay.com/v1/pixQrCode`;
 const tempoExpiracaoPixSegundos = 3600; // 1 Hora
+const defaultHeaders = {
+    Authorization: `Bearer ${process.env.ABACATE_PAY_API_KEY}`,
+    'Content-Type': 'application/json',
+};
 
 const errosTraducao = {
     'Invalid taxId': 'CPF/CNPJ inválido',
+    'Pix QRCode not found': 'PIX não encontrado',
+    'Unauthorized': 'Não autorizado, contate o suporte'
 };
 
 const gerarPix = async ({ valor_decimal, cliente_nome, cliente_email, cliente_cpf_cnpj, cliente_telefone = '' }) => {
@@ -44,14 +50,14 @@ const gerarPix = async ({ valor_decimal, cliente_nome, cliente_email, cliente_cp
 
         const options = {
             method: 'POST',
-            headers: {
-                Authorization: `Bearer ${process.env.ABACATE_PAY_API_KEY}`,
-                'Content-Type': 'application/json',
-            },
+            headers: { ...defaultHeaders },
             body: JSON.stringify(bodyObj)
         }
 
-        const responsePix = await fetch(apiUrl, options);
+        const endpoint = 'create';
+        const completeUrl = `${apiUrl}/${endpoint}`;
+
+        const responsePix = await fetch(completeUrl, options);
         const dataPix = await responsePix.json();
 
         if (!responsePix.ok) {
@@ -90,4 +96,94 @@ const gerarPix = async ({ valor_decimal, cliente_nome, cliente_email, cliente_cp
     }
 };
 
-export default { gerarPix };
+// ID integração da tabela PIX
+const selecionarPix = async (id_integracao) => {
+    try {
+        const endpoint = 'check';
+        const completeUrl = `${apiUrl}/${endpoint}?id=${id_integracao}`;
+
+        const options = {
+            method: 'GET',
+            headers: { ...defaultHeaders }
+        };
+
+        const responsePix = await fetch(completeUrl, options);
+        const dataPix = await responsePix.json();
+
+        if(responsePix.ok){
+            return {
+                ok: true,
+                error: false,
+                data: dataPix.data,
+                mensagem: '',
+            }
+        }
+
+        if(errosTraducao.hasOwnProperty(dataPix.error)){
+            return {
+                ok: false,
+                error: false,
+                data: {},
+                mensagem: errosTraducao[dataPix.error]
+            }
+        }else{
+            throw new Error(dataPix.error);
+        }
+    } catch (error) {
+        console.error('Erro ao selecionar PIX:', error);
+        return {
+            ok: false,
+            error: true,
+            data: {},
+            mensagem: 'Erro ao selecionar PIX, contate o suporte'
+        };
+    }
+
+}
+
+const simularPagamentoPix = async (id_integracao) => {
+    try {
+        const endpoint = 'simulate-payment';
+        const completeUrl = `${apiUrl}/${endpoint}?id=${id_integracao}`;
+
+        const options = {
+            method: 'POST',
+            headers: { ...defaultHeaders },
+            body: JSON.stringify({ id: id_integracao })
+        };
+
+        const responsePix = await fetch(completeUrl, options);
+        const dataPix = await responsePix.json();
+        console.log(dataPix);
+
+        if (responsePix.ok) {
+            return {
+                ok: true,
+                error: false,
+                data: dataPix.data,
+                mensagem: 'Pagamento simulado com sucesso'
+            }
+        }else{
+            if (errosTraducao.hasOwnProperty(dataPix.error)) {
+                return {
+                    ok: false,
+                    error: false,
+                    data: {},
+                    mensagem: errosTraducao[dataPix.error]
+                }
+            } else {
+                throw new Error(dataPix.error);
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao simular pagamento PIX:', error);
+        return {
+            ok: false,
+            error: true,
+            data: {},
+            mensagem: 'Erro ao simular pagamento PIX, contate o suporte'
+        };
+    }
+}
+
+export default { gerarPix, selecionarPix, simularPagamentoPix };
