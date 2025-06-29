@@ -1,5 +1,5 @@
 // Importação de Módulos
-import PixModel from '../models/pixModel.js';
+import PixModel from '../banco/models/pixModel.js';
 
 // Importação de Serviços
 import abacatePayService from '../services/abacatePayService.js';
@@ -72,7 +72,12 @@ const selecionar = async (req, res) => {
             return res.status(400).json({ mensagem: `ID do PIX inválido` });
         }
 
-        const pix = await PixModel.findByPk(id);
+        const pix = await PixModel.findOne({
+            where: {
+                id: id,
+                id_beneficiario: req.beneficiario.id
+            }
+        });
 
         if (!pix) {
             return res.status(404).json({ mensagem: `PIX não encontrado` });
@@ -133,7 +138,12 @@ const simularPagamento = async (req, res) => {
             return res.status(400).json({ mensagem: 'ID do PIX inválido' });
         }
 
-        const pix = await PixModel.findByPk(id);
+        const pix = await PixModel.findOne({
+            where: {
+                id: id,
+                id_beneficiario: req.beneficiario.id
+            }
+        }); 
 
         if (!pix) {
             return res.status(404).json({ mensagem: 'PIX não encontrado' });
