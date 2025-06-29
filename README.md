@@ -169,6 +169,13 @@ Possíveis responses HTTP:
     { "mensagem": "Sincronize os estados antes de sincronizar cidades!" }
 ```
 OBS: em casos de erros ou autorização, segue o padrão descrito em [Erros](##Erros)
+### Gerar PIX
+Deve retornar um objeto com os detalhes da cobrança PIX
+
+Exemplo:
+``` json
+    {...}
+```
 ## Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
