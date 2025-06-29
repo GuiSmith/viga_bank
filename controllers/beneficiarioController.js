@@ -4,14 +4,6 @@ import TokenLoginModel from "../models/tokenLoginModel.js";
 //Selecionar beneficiário por ID
 async function selecionar(req, res) {
   try {
-    const id = req.beneficiario.id;
-    const beneficiario = await Beneficiario.findByPk(id);
-
-    if (!beneficiario) {
-      return res.status(404).json({
-        mensagem: "Beneficiário associado ao token não foi encontrado",
-      });
-    }
     return res.status(200).json(beneficiario);
   } catch (error) {
     console.error("Erro ao selecionar beneficiário:", error);

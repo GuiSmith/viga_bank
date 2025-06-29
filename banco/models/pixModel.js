@@ -1,16 +1,11 @@
 import { DataTypes } from "sequelize";
 import banco from '../banco.js';
-import chargeIdGeradorHook from "../hooks/chargeIdGeradorHook.js";
 
 const PixModel = banco.define('pix', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    },
-    pix_type: {
-        type: DataTypes.ENUM('cc','qr'),
-        allowNull: false,
     },
     valor: {
         type: DataTypes.DECIMAL(10, 2),
@@ -25,15 +20,14 @@ const PixModel = banco.define('pix', {
         allowNull: false,
         defaultValue: 'A'
     },
-    cod: {
-        type: DataTypes.STRING,
+    cod_copia_cola: {
+        type: DataTypes.TEXT,
         unique: true,
-        allowNull: true
+        allowNull: false
     },
-    qrcode_url: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: true
+    qrcode_base64: {
+        type: DataTypes.TEXT,
+        allowNull: false
     },
     id_beneficiario: {
         type: DataTypes.INTEGER,
@@ -44,10 +38,21 @@ const PixModel = banco.define('pix', {
         allowNull: false,
         defaultValue: DataTypes.NOW
     },
-    charge_id: {
+    id_integracao: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+    },
+    cliente_nome: { 
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    cliente_email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    cliente_cpf_cnpj: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
 });
 
@@ -59,7 +64,5 @@ PixModel.associate = (models) => {
         }
     });
 };
-
-chargeIdGeradorHook(PixModel);
 
 export default PixModel;

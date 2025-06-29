@@ -1,4 +1,4 @@
-import BeneficiarioModel from "../models/beneficiarioModel.js";
+import BeneficiarioModel from "../banco/models/beneficiarioModel.js";
 
 const chargeIdGeradorHook = (model) => {
     model.beforeCreate(async (instance, options) => {
