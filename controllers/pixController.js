@@ -40,7 +40,7 @@ const gerar = async (req, res) => {
 
         // PIX gerado com sucesso
         const novoPix = await PixModel.create({
-            valor: dadosPix.amount,
+            valor: (dadosPix.amount / 100),
             cod_copia_cola: dadosPix.brCode,
             qrcode_base64: dadosPix.brCodeBase64,
             id_beneficiario: req.beneficiario.id,
@@ -60,4 +60,32 @@ const gerar = async (req, res) => {
     }
 }
 
-export default { gerar };
+const selecionar = async (req, res) => {
+    try {
+        if(!req.params.id){
+            return res.status(400).json({ mensagem: `Informe o ID do PIX` });
+        }
+        const { id } = req.params;
+
+        // Verificar se ID é número
+        if(isNaN(id)){
+            return res.status(400).json({ mensagem: `ID do PIX inválido` });
+        }
+
+        const pix = await PixModel.findByPk(id);
+
+        if(!pix){
+            return res.status(404).json({ mensagem: `PIX não encontrado` });
+        }
+
+        return res.status(200).json(pix);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            mensagem: 'Erro interno, contate o suporte'
+        });
+    }
+};
+
+export default { gerar, selecionar };
