@@ -9,17 +9,10 @@ async function selecionar(req, res) {
 
     if (!beneficiario) {
       return res.status(404).json({
-        body: {},
-        detalhes: {
-          id_beneficiario_token: id,
-        },
         mensagem: "Beneficiário associado ao token não foi encontrado",
       });
     }
-    return res.status(200).json({
-      body: beneficiario,
-      mensagem: "Beneficiário encontrado com sucesso",
-    });
+    return res.status(200).json(beneficiario);
   } catch (error) {
     console.error("Erro ao selecionar beneficiário:", error);
     return res
