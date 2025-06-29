@@ -8,6 +8,7 @@ import PixModel from './pixModel.js';
 import CobrancaCartaoModel from './cobrancaCartaoModel.js';
 import BoletoModel from './boletoModel.js';
 import ParcelamentoModel from './parcelamentoModel.js';
+import RequestLogModel from './requestLogsModel.js';
 
 const models = {
     Cidade: CidadeModel,
@@ -18,7 +19,8 @@ const models = {
     Pix: PixModel,
     CobrancaCartao: CobrancaCartaoModel,
     Boleto: BoletoModel,
-    Parcelamento: ParcelamentoModel
+    Parcelamento: ParcelamentoModel,
+    RequestLog: RequestLogModel
 };
 
 // Registra associações
