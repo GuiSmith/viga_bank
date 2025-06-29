@@ -14,6 +14,7 @@ import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
 import tokenApiRoutes from './routes/tokenApiRoutes.js';
 import cidadeRoutes from './routes/cidadeRoutes.js';
 import estadoRoutes from './routes/estadoRoutes.js';
+import pixRoutes from './routes/pixRoutes.js';
 
 // Configurando express app
 const app = express();
@@ -53,5 +54,6 @@ app.use("/beneficiarios", beneficiarioRoutes);
 app.use('/token', tokenApiRoutes);
 app.use('/cidades', cidadeRoutes);
 app.use('/estados', estadoRoutes);
+app.use('/pix',pixRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
