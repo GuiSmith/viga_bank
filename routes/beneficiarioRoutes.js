@@ -1,10 +1,12 @@
 import express from "express";
 import beneficiarioController from "../controllers/beneficiarioController.js";
+import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
-// Rota para listar todos os beneficiários
-router.get("/", beneficiarioController.listar);
+// Rotas beneficiários
+router.get("/", auth, beneficiarioController.selecionar);
+router.post("/", beneficiarioController.criar);
 router.post("/login", beneficiarioController.login);
 
 export default router;
