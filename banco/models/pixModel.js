@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import banco from '../banco.js';
-import chargeIdGeradorHook from "../hooks/chargeIdGeradorHook.js";
 
 const PixModel = banco.define('pix', {
     id: {

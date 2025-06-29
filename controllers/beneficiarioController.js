@@ -1,5 +1,5 @@
-import Beneficiario from '../models/beneficiarioModel.js';
-import TokenLoginModel from '../models/tokenLoginModel.js';
+import Beneficiario from '../banco/models/beneficiarioModel.js';
+import TokenLoginModel from '../banco/models/tokenLoginModel.js';
 
 // Lista todos os beneficiários
 async function listar(req, res) {

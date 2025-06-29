@@ -1,5 +1,5 @@
-import Views from "../views/index.js";
-import banco from "../banco.js";
+import Views from "../banco/views/index.js";
+import banco from "../banco/banco.js";
 
 const listar = async (req, res) => {
     try {

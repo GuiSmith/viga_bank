@@ -1,4 +1,4 @@
-import tokenApiModel from '../models/tokenApiModel.js';
+import tokenApiModel from '../banco/models/tokenApiModel.js';
 
 async function listar(req, res) {
     try {
@@ -48,13 +48,8 @@ async function selecionar (req, res) {
 // Criar token, recebendo apenas o id beneficiario no body
 async function criar (req, res) {
     try {
-        const { id_beneficiario } = req.body;
 
-        if (!id_beneficiario) {
-            return res.status(400).json({ mensagem: 'ID do beneficiário não informado' });
-        }
-
-        const novoToken = await tokenApiModel.create({ id_beneficiario });
+        const novoToken = await tokenApiModel.create({ id_beneficiario: req.beneficiario.id });
 
         return res.status(201).json(novoToken);
     } catch (error) {

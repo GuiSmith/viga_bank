@@ -1,6 +1,6 @@
 // Importação de modelos
-import CidadeModel from '../models/cidadeModel.js';
-import EstadoModel from '../models/estadoModel.js';
+import CidadeModel from '../banco/models/cidadeModel.js';
+import EstadoModel from '../banco/models/estadoModel.js';
 
 // Importação de serviços
 import ibgeService from '../services/ibgeService.js';
