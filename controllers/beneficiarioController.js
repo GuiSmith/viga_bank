@@ -89,14 +89,7 @@ async function criar(req, res) {
     const dadosNovoBeneficiario = novoBeneficiario.get({ plain: true });
     delete dadosNovoBeneficiario.senha;
 
-    return res.status(201).json({
-      body: dadosNovoBeneficiario,
-      detalhes: {
-        id: novoBeneficiario.id,
-        data_cadastro: novoBeneficiario.data_cadastro,
-      },
-      mensagem: "Beneficiário criado com sucesso",
-    });
+    return res.status(201).json(dadosNovoBeneficiario);
   } catch (error) {
     console.error("Erro ao criar beneficiário:", error);
     return res.status(500).json({ mensagem: "Erro interno do servidor" });
