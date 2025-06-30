@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/', transacaoCartaoController.criarCobranca);
 router.get('/cartao/:id_cartao', transacaoCartaoController.selecionarCartao);
 router.get('/:id', transacaoCartaoController.selecionarTransacaoCartao);
+router.get('/', transacaoCartaoController.listarTransacoesCartao);
 
 export default router;

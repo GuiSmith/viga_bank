@@ -221,7 +221,25 @@ const selecionarTransacaoCartao = async (req, res) => {
     }
 };
 
+// Função para listar todas as transações de cartão de um beneficiário, o beneficiário já está em req.beneficiario
+const listarTransacoesCartao = async (req, res) => {
+    try {
+        const transacoes = await TransacaoCartaoModel.findAll({
+            where: {
+                id_beneficiario: req.beneficiario.id,
+            },
+            order: [['data_ultima_transacao', 'DESC']],
+        });
+        return res.status(200).json(transacoes.map(transacao => transacao.toJSON()));
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            mensagem: "Erro interno ao buscar as transações do cartão. Contate o suporte.",
+        });
+    }
+};
+
 
 // Função para selecionar uma transação de cartão específica,
 
-export default { criarCobranca, selecionarCartao, selecionarTransacaoCartao };
+export default { criarCobranca, selecionarCartao, selecionarTransacaoCartao, listarTransacoesCartao };
