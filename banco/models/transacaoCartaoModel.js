@@ -25,6 +25,7 @@ const TransacaoCartaoModel = banco.define("transacao_cartao", {
         allowNull: false,
         defaultValue: DataTypes.NOW,
     },
+    id_beneficiario: { type: DataTypes.INTEGER, allowNull: false },
     id_cartao: { type: DataTypes.INTEGER, allowNull: false },
 });
 
@@ -32,6 +33,11 @@ TransacaoCartaoModel.associate = (models) => {
     TransacaoCartaoModel.belongsTo(models.Cartao, {
         foreignKey: { name: "id_cartao", allowNull: false },
     });
+
+    TransacaoCartaoModel.belongsTo(models.Beneficiario, {
+        foreignKey: { name: "id_beneficiario", allowNull: false },
+    });
 };
+
 
 export default TransacaoCartaoModel;

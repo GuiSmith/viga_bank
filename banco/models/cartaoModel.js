@@ -15,7 +15,6 @@ const CartaoModel = banco.define("cartao", {
     numero_endereco: { type: DataTypes.STRING, allowNull: false },
     complemento: { type: DataTypes.STRING },
     id_cidade: { type: DataTypes.INTEGER, allowNull: false },
-    id_beneficiario: { type: DataTypes.INTEGER, allowNull: false },
     data_cadastro: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -24,9 +23,6 @@ const CartaoModel = banco.define("cartao", {
 });
 
 CartaoModel.associate = (models) => {
-    CartaoModel.belongsTo(models.Beneficiario, {
-        foreignKey: { name: "id_beneficiario", allowNull: false },
-    });
 
     CartaoModel.belongsTo(models.Cidade, {
         foreignKey: { name: "id_cidade", allowNull: false },

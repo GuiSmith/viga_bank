@@ -7,7 +7,7 @@ import CidadeModel from "../banco/models/cidadeModel.js";
 import mockOperadoraCartaoService from "../services/mockOperadoraCartaoService.js";
 import { response } from "express";
 
-export const criar = async (req, res) => {
+export const criarCobranca = async (req, res) => {
     const dadosObrigatorios = [
         "tipo",
         "nome_titular",
@@ -40,19 +40,18 @@ export const criar = async (req, res) => {
 
     try {
 
-        let idCartao;
+        let cartao;
         // Verifica se o cartão já existe
         if (body.hasOwnProperty("id_cartao")) {
             // Verifica se um id_cartao foi fornecido, se é um número válido
-            let idCartao = parseInt(body.id_cartao, 10);
 
-            if (isNaN(idCartao) || idCartao <= 0) {
+            if (isNaN(body.id_cartao) || body.id_cartao <= 0) {
                 return res.status(400).json({
                     mensagem: "ID do cartão inválido.",
                 });
             }
-            const cartaoExistente = await CartaoModel.findByPk(idCartao);
-            if (!cartaoExistente) {
+            cartao = await CartaoModel.findByPk(body.id_cartao);
+            if (!cartao) {
                 return res.status(404).json({
                     mensagem: "Cartão não encontrado.",
                 });
@@ -74,10 +73,9 @@ export const criar = async (req, res) => {
                 numero_endereco: body.numero_endereco,
                 complemento: body.complemento,
                 id_cidade: body.id_cidade,
-                id_beneficiario: req.beneficiario.id,
             });
 
-            idCartao = novoCartao.id;
+            cartao = novoCartao;
         }
 
         // Cria a transação com status inicial
@@ -85,7 +83,7 @@ export const criar = async (req, res) => {
             tipo: body.tipo,
             valor: body.valor,
             status: 'A',
-            id_cartao: idCartao,
+            id_cartao: cartao.id,
             id_beneficiario: req.beneficiario.id,
             data_ultima_transacao: new Date(),
         });
@@ -128,8 +126,9 @@ export const criar = async (req, res) => {
 
         transacaoCartao.retorno_ultima_transacao = responsePagamentoCartao.mensagem;
         transacaoCartao.status = responsePagamentoCartao.ok ? "R" : "A";
-        transacaoCartao.token = responsePagamentoCartao.data?.token || null;
+        cartao.token = responsePagamentoCartao.data && responsePagamentoCartao.data.token ? responsePagamentoCartao.data.token : null;
         await transacaoCartao.save();
+        await cartao.save();
 
         // Sucesso na operação
         if (responsePagamentoCartao.ok) {
@@ -162,4 +161,41 @@ export const criar = async (req, res) => {
     }
 };
 
-export default { criar };
+// Função para selecionar um CartaoModel específico, dado o ID
+export const selecionarCartao = async (req, res) => {
+    try {
+        if(!req.params.id_cartao){
+            return res.status(400).json({
+                mensagem: "ID do cartão não fornecido.",
+            });
+        }
+        const id = req.params.id_cartao;
+
+        if (!id || isNaN(id)) {
+            return res.status(400).json({
+                mensagem: "ID do cartão inválido.",
+            });
+        }
+
+        const cartao = await CartaoModel.findByPk(id);
+        if (!cartao) {
+            return res.status(404).json({
+                mensagem: "Cartão não encontrado.",
+            });
+        }
+
+        const cartaoRetorno = cartao.toJSON();
+        delete cartaoRetorno.token;
+        return res.status(200).json(cartaoRetorno);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            mensagem: "Erro interno ao buscar o cartão. Contate o suporte.",
+        });
+    }
+};
+
+
+// Função para selecionar uma transação de cartão específica,
+
+export default { criarCobranca, selecionarCartao };
