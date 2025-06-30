@@ -25,15 +25,15 @@ sudo systemctl status postgresql
 psql -U postgres -h localhost
 ```
 
-3.2 **Criar o banco de dados `biblioteca`:**
+3.2 **Criar o banco de dados `viga_bank`:**
 ```sql
-CREATE DATABASE biblioteca;
+CREATE DATABASE viga_bank;
 ```
 
 ### Conectar ao Banco
 Para acessar o banco com o novo usuário:
 ```bash
-psql -U biblioteca_user -d biblioteca -h localhost -W
+psql -U db_user -h localhost -d viga_bank
 ```
 
 ### Configurando migração
@@ -42,14 +42,24 @@ psql -U biblioteca_user -d biblioteca -h localhost -W
 Crie um arquivo chamado `.env` na raiz do projeto com o seguinte conteúdo:
 
 ```env
-DATABASE_URL=postgresql://biblioteca_user:sua_senha@localhost:5432/biblioteca
+DATABASE_URL=postgresql://db_user:db_password@localhost:5432/viga_bank
 ```
 
 Altere os valores conforme necessário para o seu ambiente.
 
 2. **Execute a migração**
-Utilize a ferramenta de migração do seu projeto (por exemplo, com o Prisma):
+Utilize a ferramenta de migração do seu projeto:
 
+A migração irá, respectivamente:
+1. Destruir todas as views
+2. Criar tabelas
+3. Criar views
+4. Criar funções
+
+OBS: se você identificar comandos de `DROP TABLE IF EXISTS` seguido do nome de alguma view, não se espante.
+Isso acontece porque não consegui fazer com que o comando `banco.sync({alter: true})` não crie tabelas com os modelos das views
+
+Comando para executar a migração:
 ```bash
 node migrate.js
 ```
