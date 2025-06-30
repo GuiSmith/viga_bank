@@ -4,13 +4,13 @@ export function processarPagamentoCartao({ tipo, cartao, valor }) {
         {
             ok: false,
             error: true,
-            mensagem: "Operadora fora do ar",
+            mensagem: "Operadora de cartão fora do ar",
             statusHttp: 503
         },
         {
             ok: false,
             error: true,
-            mensagem: "Instabilidade no sistema",
+            mensagem: "Instabilidade no sistema de Operadora de Cartão",
             statusHttp: 502
         },
         {
@@ -74,8 +74,20 @@ export function processarPagamentoCartao({ tipo, cartao, valor }) {
         };
     }
 
-    const respostaEscolhida = respostasPossiveis[Math.floor(Math.random() * respostasPossiveis.length)];
+    // 65% de chance de sucesso
+    const chanceSucesso = 0.65;
 
+    // Filtra as respostas possíveis em sucesso e falha
+    const respostasSucesso = respostasPossiveis.filter(r => r.ok === true);
+    const respostasFalha = respostasPossiveis.filter(r => r.ok === false);
+
+    // Decide qual grupo sortear
+    const usarSucesso = Math.random() < chanceSucesso;
+    const grupo = usarSucesso ? respostasSucesso : respostasFalha;
+
+    // Sorteia uma resposta aleatória dentro do grupo
+    const respostaEscolhida = grupo[Math.floor(Math.random() * grupo.length)];
+    
     return {
         ok: respostaEscolhida.ok,
         error: respostaEscolhida.error,

@@ -5,10 +5,11 @@ import BeneficiarioModel from './beneficiarioModel.js';
 import TokenLoginModel from './tokenLoginModel.js';
 import TokenApiModel from './tokenApiModel.js';
 import PixModel from './pixModel.js';
-import CobrancaCartaoModel from './cobrancaCartaoModel.js';
+import transacaoCartaoModel from './transacaoCartaoModel.js';
 import BoletoModel from './boletoModel.js';
 import ParcelamentoModel from './parcelamentoModel.js';
 import RequestLogModel from './requestLogsModel.js';
+import CartaoModel from './cartaoModel.js';
 
 const models = {
     Cidade: CidadeModel,
@@ -17,10 +18,11 @@ const models = {
     Beneficiario: BeneficiarioModel,
     TokenApi: TokenApiModel,
     Pix: PixModel,
-    CobrancaCartao: CobrancaCartaoModel,
+    TransacaoCartao: transacaoCartaoModel,
     Boleto: BoletoModel,
     Parcelamento: ParcelamentoModel,
-    RequestLog: RequestLogModel
+    RequestLog: RequestLogModel,
+    Cartao: CartaoModel,
 };
 
 // Registra associações
