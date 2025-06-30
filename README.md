@@ -108,6 +108,48 @@ O token disponível nos caminhos `/token` são Tokens API, que são usados para 
 
 O token informado através de `/beneficiarios/login/` é um token de login, que é usado internamente por qualquer um que criar um front-end para o projeto, como nós. Não use este token para integrar em seu sistema
 
+## Rotas
+A seguir, você pode ver todas as rotas disponíveis 
+### Views
+#### Listar `/views`
+Lista todas as views
+
+Exemplo:
+``` json
+[
+    "cobrancas"
+]
+```
+#### Listar `/views/:view`
+Lista os dados de uma view específica
+
+Exemplo:
+``` json
+    [
+        {
+            "id": 4,
+            "valor": "100.44",
+            "status": "A receber",
+            "data_cadastro": "2025-06-29T05:19:39.826Z",
+            "id_beneficiario": 1,
+            "id_integracao": "pix_char_xLTgmeBmCqmGQH10Ucs4u5r2",
+            "nosso_numero": null,
+            "token": null,
+            "tipo_cobranca": "Pix"
+        },
+        {
+            "id": 3,
+            "valor": "100.00",
+            "status": "A receber",
+            "data_cadastro": "2025-06-29T05:19:19.950Z",
+            "id_beneficiario": 1,
+            "id_integracao": "pix_char_U4uaFHL4GjBpAHKqNGtADdBU",
+            "nosso_numero": null,
+            "token": null,
+            "tipo_cobranca": "Pix"
+        }
+    ]
+```
 ## Padrão de retornos
 
 ### Listagem
