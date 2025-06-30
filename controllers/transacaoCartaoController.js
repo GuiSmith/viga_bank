@@ -6,7 +6,7 @@ import CidadeModel from "../banco/models/cidadeModel.js";
 // Serviços
 import mockOperadoraCartaoService from "../services/mockOperadoraCartaoService.js";
 
-export const criarCobranca = async (req, res) => {
+const criarCobranca = async (req, res) => {
     const dadosObrigatorios = [
         "tipo",
         "nome_titular",
@@ -156,7 +156,7 @@ export const criarCobranca = async (req, res) => {
 };
 
 // Função para selecionar um CartaoModel específico, dado o ID
-export const selecionarCartao = async (req, res) => {
+const selecionarCartao = async (req, res) => {
     try {
         if(!req.params.id_cartao){
             return res.status(400).json({
@@ -189,7 +189,57 @@ export const selecionarCartao = async (req, res) => {
     }
 };
 
+// Função para selecionar uma transação de cartão específica, dado o ID
+const selecionarTransacaoCartao = async (req, res) => {
+    try {
+        if(!req.params.id){
+            return res.status(400).json({
+                mensagem: "ID da transação do cartão não fornecido.",
+            });
+        }
+        const id = req.params.id;
+
+        if (!id || isNaN(id)) {
+            return res.status(400).json({
+                mensagem: "ID da transação do cartão inválido.",
+            });
+        }
+
+        const transacao = await TransacaoCartaoModel.findByPk(id);
+        if (!transacao) {
+            return res.status(404).json({
+                mensagem: "Transação do cartão não encontrada.",
+            });
+        }
+
+        return res.status(200).json(transacao.toJSON());
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            mensagem: "Erro interno ao buscar a transação do cartão. Contate o suporte.",
+        });
+    }
+};
+
+// Função para listar todas as transações de cartão de um beneficiário, o beneficiário já está em req.beneficiario
+const listarTransacoesCartao = async (req, res) => {
+    try {
+        const transacoes = await TransacaoCartaoModel.findAll({
+            where: {
+                id_beneficiario: req.beneficiario.id,
+            },
+            order: [['data_ultima_transacao', 'DESC']],
+        });
+        return res.status(200).json(transacoes.map(transacao => transacao.toJSON()));
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            mensagem: "Erro interno ao buscar as transações do cartão. Contate o suporte.",
+        });
+    }
+};
+
 
 // Função para selecionar uma transação de cartão específica,
 
-export default { criarCobranca, selecionarCartao };
+export default { criarCobranca, selecionarCartao, selecionarTransacaoCartao, listarTransacoesCartao };
