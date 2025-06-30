@@ -89,9 +89,18 @@ Tenha certeza de que não há nenhum outro serviço escutando a porta no arquivo
 npm start
 ```
 
-# Padrão de resposta da API
+# Documentação API
 
-## Listagem
+## Tokens
+Neste projeto, temos dois tipos de tokens.
+
+O token disponível nos caminhos `/token` são Tokens API, que são usados para você poder integrar em seu sistema.
+
+O token informado através de `/beneficiarios/login/` é um token de login, que é usado internamente por qualquer um que criar um front-end para o projeto, como nós. Não use este token para integrar em seu sistema
+
+## Padrão de retornos
+
+### Listagem
 1. 200 - OK
 ``` json
     [
@@ -105,26 +114,26 @@ npm start
 ``` json
     
 ```
-## Selecionar
+### Selecionar
 1. 200 - OK
 ``` json
     {...}
 ```
-## Edição
+### Edição
 1. 200 - OK
 ``` json
     {...}
 ``` 
-## Funcionalidade específica
+### Funcionalidade específica
 Para cada funcionalidade específica, o retorno esperado será listado a seguir, contate nossos administradores para casos onde o padrão divergir da realidade
 
 OBS: Os erros ainda seguem o padrão de Erros descrito nos tópicos abaixo
-### Login
+#### Login
 200 - OK
 ``` json
     { "token": "..." }
 ```
-### Sincronizar Estados
+#### Sincronizar Estados
 1. 201: Para quando algum estado foi criado
 ``` json
     [
@@ -138,7 +147,7 @@ OBS: Os erros ainda seguem o padrão de Erros descrito nos tópicos abaixo
         "mensagem":"Nenhuma estado novo a ser criado"
     }
 ```
-### Sincronizar cidades
+#### Sincronizar cidades
 1. 201: Para quando alguma cidade foi criada
 ``` json
     [
@@ -152,7 +161,7 @@ OBS: Os erros ainda seguem o padrão de Erros descrito nos tópicos abaixo
         "mensagem":"Nenhuma cidade nova a ser criada"
     }
 ```
-### Gerar PIX
+#### Gerar PIX
 201 - OK
 ``` json
     {
@@ -169,12 +178,12 @@ OBS: Os erros ainda seguem o padrão de Erros descrito nos tópicos abaixo
         "cliente_cpf_cnpj": "13353707905"
     }
 ```
-### Simular pagamento
+#### Simular pagamento
 1. 200 - OK
 ``` json
     { "mensagem": "Pagamento simulado com sucesso" }
 ```
-### Gerar cobrança cartão
+#### Gerar cobrança cartão
 Deve retornar um objeto com os detalhes da cobrança de cartão de crédito
 ```json
     {
@@ -189,21 +198,21 @@ Deve retornar um objeto com os detalhes da cobrança de cartão de crédito
         "retorno_ultima_transacao": "Pagamento aprovado no crédito"
     }
 ```
-## Deleção
+### Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
 Exemplo:
 ``` json
     { "mensagem": "Registro deletado com sucesso" }
 ```
-## Erros
+### Erros
 Erros espeados são aqueles onde a API sabe o motivo do erro, geralmente erros de regra de negócio, que podem ser resolvidos pelo usuário API.
 Ex: dados faltantes, criar cidade sem criar estado primeiro, etc.
 
 Erros inesperados são aqueles que fogem do controle do usuário API.
 Ex: API Serasa indisponível, API IBGE indisponível
 
-### Erros esperados (4xx)
+#### Erros esperados (4xx)
 Erros esperados são ações que não foram realizadas por razões diversas, como regra de negócio, erro de envio da requisição,etc.
 
 O padrão de retorno da API para erros esperados será sempre:
@@ -218,7 +227,7 @@ OBS: Quando um body não for informado, o body será um objeto vazio
     mensagem: 'mensagem de erro aqui'
 }
 ```
-### Erros Inesperados (5xx)
+#### Erros Inesperados (5xx)
 Erros inesperados são ações que não foram realizadas por erros não conhecidos e previstos pelos desenvolvedores da API.
 
 
