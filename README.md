@@ -92,9 +92,7 @@ npm start
 # Padrão de resposta da API
 
 ## Listagem
-O padrão de resposta para listagem será um array de objetos
-
-Exemplo:
+1. 200 - OK
 ``` json
     [
         {...}
@@ -102,33 +100,31 @@ Exemplo:
         {...}
     ]
 ```
-## Selecionar
-O padrão de resposta para seleção será sempre um objeto
 
-Exemplo:
+2. 204 - Nenhum registro
+``` json
+    
+```
+## Selecionar
+1. 200 - OK
 ``` json
     {...}
 ```
 ## Edição
-O padrão de resposta para seleção será sempre o objeto atualizado
-
-Exemplo:
+1. 200 - OK
 ``` json
     {...}
 ``` 
 ## Funcionalidade específica
 Para cada funcionalidade específica, o retorno esperado será listado a seguir, contate nossos administradores para casos onde o padrão divergir da realidade
-### Login
-Deve retornar um objeto com a chave `token` seguido do token a ser usado nas requisições
 
-Exemplo:
+OBS: Os erros ainda seguem o padrão de Erros descrito nos tópicos abaixo
+### Login
+200 - OK
 ``` json
     { "token": "..." }
 ```
 ### Sincronizar Estados
-Deve retornar um array com os objetos das cidades criadas ou uma mensagem informando que nenhuma cidade nova foi criada.
-
-Possíveis responses HTTP:
 1. 201: Para quando algum estado foi criado
 ``` json
     [
@@ -142,11 +138,7 @@ Possíveis responses HTTP:
         "mensagem":"Nenhuma estado novo a ser criado"
     }
 ```
-3. 503: Para quando a API do IBGE estiver indisponível
-OBS: em casos de erros ou autorização, segue o padrão descrito em [Erros](##Erros)
 ### Sincronizar cidades
-Deve retornar um array com os objetos das cidades criadas ou uma mensagem informando que nenhuma cidade nova foi criada.
-Possíveis responses HTTP:
 1. 201: Para quando alguma cidade foi criada
 ``` json
     [
@@ -160,21 +152,42 @@ Possíveis responses HTTP:
         "mensagem":"Nenhuma cidade nova a ser criada"
     }
 ```
-3. 503: Para quando a API do IBGE estiver indisponível
-``` json
-    { "mensagem": "API do IBGE não está disponível" }
-```
-4. 409: Para quando não houver estados cadastrados
-``` json
-    { "mensagem": "Sincronize os estados antes de sincronizar cidades!" }
-```
-OBS: em casos de erros ou autorização, segue o padrão descrito em [Erros](##Erros)
 ### Gerar PIX
-Deve retornar um objeto com os detalhes da cobrança PIX
-
-Exemplo:
+201 - OK
 ``` json
-    {...}
+    {
+        "status": "A",
+        "data_cadastro": "2025-06-30T01:29:34.339Z",
+        "id": 6,
+        "valor": "4.50",
+        "cod_copia_cola": "...",
+        "qrcode_base64": "...",
+        "id_beneficiario": 1,
+        "id_integracao": "pix_char_ewndxmDFdpRjSnarBJChQnHF",
+        "cliente_nome": "Gui",
+        "cliente_email": "guilhermessmith2025@gmail.com",
+        "cliente_cpf_cnpj": "13353707905"
+    }
+```
+### Simular pagamento
+1. 200 - OK
+``` json
+    { "mensagem": "Pagamento simulado com sucesso" }
+```
+### Gerar cobrança cartão
+Deve retornar um objeto com os detalhes da cobrança de cartão de crédito
+```json
+    {
+        "data_cadastro": "2025-06-30T01:43:00.588Z",
+        "id": 69,
+        "tipo": "credito",
+        "valor": "150.75",
+        "status": "R",
+        "id_cartao": 49,
+        "id_beneficiario": 1,
+        "data_ultima_transacao": "2025-06-30T01:43:00.588Z",
+        "retorno_ultima_transacao": "Pagamento aprovado no crédito"
+    }
 ```
 ## Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
@@ -184,8 +197,13 @@ Exemplo:
     { "mensagem": "Registro deletado com sucesso" }
 ```
 ## Erros
+Erros espeados são aqueles onde a API sabe o motivo do erro, geralmente erros de regra de negócio, que podem ser resolvidos pelo usuário API.
+Ex: dados faltantes, criar cidade sem criar estado primeiro, etc.
 
-### Erros esperados
+Erros inesperados são aqueles que fogem do controle do usuário API.
+Ex: API Serasa indisponível, API IBGE indisponível
+
+### Erros esperados (4xx)
 Erros esperados são ações que não foram realizadas por razões diversas, como regra de negócio, erro de envio da requisição,etc.
 
 O padrão de retorno da API para erros esperados será sempre:
@@ -200,14 +218,16 @@ OBS: Quando um body não for informado, o body será um objeto vazio
     mensagem: 'mensagem de erro aqui'
 }
 ```
-### Erros Inesperados
+### Erros Inesperados (5xx)
 Erros inesperados são ações que não foram realizadas por erros não conhecidos e previstos pelos desenvolvedores da API.
 
 
 O Padrão de retorno da API para erros inesperados será SEMPRE:
 1. mensagem: erro interno
-``` bash
-{
-    mensagem: 'Erro interno, contate o suporte'
-}
+``` json
+    { "mensagem": "Erro interno, contate o suporte" }
+```
+2. mensagem: erro de comunicação com outras APIs
+``` json
+    { "mensagem":"Api do AbacatePay indisponível" }
 ```
