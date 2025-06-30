@@ -162,7 +162,7 @@ const simularPagamento = async (req, res) => {
         pix.status = 'R'; // Simulando pagamento
         await pix.save();
 
-        return res.status(200).json({ mensagem: 'Pagamento simulado com sucesso', pix });
+        return res.status(200).json({ mensagem: 'Pagamento simulado com sucesso' });
 
     } catch (error) {
         console.error(error);

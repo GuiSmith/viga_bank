@@ -1,10 +1,10 @@
 import express from 'express';
-import cobrancaCartaoController from '../controllers/cobrancaCartaoController.js';
+import transacaoCartaoController from '../controllers/transacaoCartaoController.js';
 
 const router = express.Router();
 
 // Rota para criar cobrança com cartão
-router.post('/', cobrancaCartaoController.criarCobranca);
-router.get('/cartao/:id_cartao', cobrancaCartaoController.selecionarCartao);
+router.post('/', transacaoCartaoController.criarCobranca);
+router.get('/cartao/:id_cartao', transacaoCartaoController.selecionarCartao);
 
 export default router;

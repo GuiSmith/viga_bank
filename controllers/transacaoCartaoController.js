@@ -5,7 +5,6 @@ import CidadeModel from "../banco/models/cidadeModel.js";
 
 // Serviços
 import mockOperadoraCartaoService from "../services/mockOperadoraCartaoService.js";
-import { response } from "express";
 
 export const criarCobranca = async (req, res) => {
     const dadosObrigatorios = [
@@ -47,13 +46,17 @@ export const criarCobranca = async (req, res) => {
 
             if (isNaN(body.id_cartao) || body.id_cartao <= 0) {
                 return res.status(400).json({
+                    body: body,
                     mensagem: "ID do cartão inválido.",
+                    detalhes: {}
                 });
             }
             cartao = await CartaoModel.findByPk(body.id_cartao);
             if (!cartao) {
                 return res.status(404).json({
+                    body: body,
                     mensagem: "Cartão não encontrado.",
+                    detalhes: {}
                 });
             }
         } else {
@@ -61,7 +64,9 @@ export const criarCobranca = async (req, res) => {
             const cidade = await CidadeModel.findByPk(body.id_cidade);
             if (!cidade) {
                 return res.status(404).json({
+                    body: body,
                     mensagem: "Cidade não encontrada.",
+                    detalhes: {}
                 });
             }
             // 
@@ -120,6 +125,7 @@ export const criarCobranca = async (req, res) => {
                 json: {
                     body: body,
                     mensagem: responsePagamentoCartao.mensagem || "Operação não realizada, contate o suporte",
+                    detalhes: {}
                 }
             };
         }
@@ -134,19 +140,7 @@ export const criarCobranca = async (req, res) => {
         if (responsePagamentoCartao.ok) {
             returnObj = {
                 statusHttp: responsePagamentoCartao.statusHttp || 200,
-                json: {
-                    mensagem: responsePagamentoCartao.mensagem || "Cobrança realizada com sucesso",
-                    data: {
-                        transacao: {
-                            id: transacaoCartao.id,
-                            id_cartao: transacaoCartao.id_cartao,
-                            tipo: transacaoCartao.tipo,
-                            valor: transacaoCartao.valor,
-                            status: transacaoCartao.status,
-                            data_ultima_transacao: transacaoCartao.data_ultima_transacao,
-                        }
-                    }
-                }
+                json: { ...transacaoCartao.toJSON() }
             };
         }
 
