@@ -635,6 +635,85 @@ Deve retornar um objeto com os detalhes da cobrança de cartão de crédito
         "retorno_ultima_transacao": "Pagamento aprovado no crédito"
     }
 ```
+### Boleto
+#### Criar `/boleto` (POST)
+Cria um novo boleto, com ou sem parcelamento.
+
+Campos obrigatórios:
+- `valor_total`
+- `data_vencimento` (formato: yyyy-mm-dd, deve ser pelo menos amanhã)
+- `especie`
+- `observacoes` (pode conter múltiplas observações separadas por ;)
+- `razao_social_pagador`
+- `cpf_cnpj_pagador`
+- `endereco_pagador_id_cidade`
+- `endereco_beneficiario_id_cidade`
+- `quantidade_parcelas`
+- `endereco_beneficiario_rua`
+- `endereco_beneficiario_numero`
+- `endereco_beneficiario_complemento`
+- `endereco_beneficiario_bairro`
+- `endereco_beneficiario_cep`
+- `endereco_pagador_rua`
+- `endereco_pagador_numero`
+- `endereco_pagador_complemento`
+- `endereco_pagador_bairro`
+- `endereco_pagador_cep`
+
+⚠️ Se quantidade_parcelas > 1, será feita uma simulação de crédito no Serasa.O CPF/CNPJ do pagador deve ter score ≥ 650.
+
+Exemplo de requisição:
+``` json
+{
+  "valor_total": 500.00,
+  "data_vencimento": "2025-07-05",
+  "especie": "DM",
+  "observacoes": "Pagamento até o vencimento;Multa após vencimento",
+  "razao_social_pagador": "Fulano de Tal LTDA",
+  "cpf_cnpj_pagador": "12345678000199",
+  "endereco_pagador_id_cidade": 4,
+  "endereco_beneficiario_id_cidade": 4,
+  "quantidade_parcelas": 1,
+  "endereco_beneficiario_rua": "Rua Exemplo",
+  "endereco_beneficiario_numero": "123",
+  "endereco_beneficiario_complemento": "Sala 4",
+  "endereco_beneficiario_bairro": "Centro",
+  "endereco_beneficiario_cep": "89801234",
+  "endereco_pagador_rua": "Rua Pagador",
+  "endereco_pagador_numero": "321",
+  "endereco_pagador_complemento": "Casa",
+  "endereco_pagador_bairro": "Bairro Azul",
+  "endereco_pagador_cep": "89804567"
+}
+```
+
+Exemplo de resposta (201):
+``` json
+{
+  "parcelamento": null,
+  "boletos": [
+    {
+      "id": 1,
+      "nosso_numero": "NOSSO-1234567890",
+      "link": "https://drive.google.com/file/d/1LnbHqJ3-OD3EZEb-11DB9N8OnvnvpHsX/view?usp=drive_link",
+      "valor": "500.00",
+      "data_vencimento": "2025-07-05",
+      "status": "A receber",
+      ...
+    }
+  ]
+}
+```
+
+Possíveis erros (400, 422, 500):
+
+ - Campos obrigatórios não informados
+ - Valor inválido
+ - Data inválida
+ - Cidade não encontrada
+ - Score do Serasa abaixo de 650
+ - Erro interno ao salvar no banco
+
 ### Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
