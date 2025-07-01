@@ -215,6 +215,19 @@ Esses campos não podem se repetir entre beneficiários já cadastrados.
 ``` 
 #### Login `/beneficiarios/login` (POST)
 Realiza o login do beneficiário e retorna um token de autenticação
+
+Dados obrigatórios:
+ - `email`
+ - `senha`
+Exemplo de requisição:
+``` json
+{
+	"email":"guilhermessmith2014@gmail.com"
+	"senha":"ewfwjifewe"
+}
+```
+
+Exemplo de retorno
 ``` json
 {
 	"token": "eee894a4-d8fe-4fe0-87de-b589cafe282c"
