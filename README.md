@@ -471,6 +471,40 @@ Simula o pagamento de um PIX
     }
 }
 ```
+### Cobranças/Transações de cartão
+#### Criar cobrança cartão `/cobranca-cartao/` (POST)
+Cria uma cobrança via cartão de crédito
+
+Dados obrigatórios
+
+ - `tipo`
+ - `nome_titular`
+ - `cpf_titular`
+ - `bandeira`
+ - `numero_cartao`
+ - `cvv`
+ - `vencimento`
+ - `valor`
+ - `endereco`
+ - `numero_endereco`
+ - `complemento`
+ - `id_cidade`
+
+Exemplo de reposta:
+``` json
+{
+	"data_cadastro": "2025-07-01T03:36:03.341Z",
+	"id": 7,
+	"tipo": "credito",
+	"valor": "150.75",
+	"status": "R",
+	"id_cartao": 7,
+	"id_beneficiario": 1,
+	"data_ultima_transacao": "2025-07-01T03:36:03.341Z",
+	"retorno_ultima_transacao": "Pagamento aprovado no crédito"
+}
+```
+
 ## Padrão de retornos
 
 ### Listagem
