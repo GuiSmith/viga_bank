@@ -30,10 +30,6 @@ const Model = banco.define('cobrancas_view', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    token: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     tipo_cobranca: {
         type: DataTypes.STRING,
         allowNull: false
