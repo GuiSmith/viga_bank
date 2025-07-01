@@ -30,10 +30,6 @@ const Model = banco.define('cobrancas_view', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    token: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     tipo_cobranca: {
         type: DataTypes.STRING,
         allowNull: false
@@ -55,7 +51,6 @@ const sql = `
         p.id_beneficiario,
         p.id_integracao,
         NULL AS nosso_numero,
-        NULL AS token,
         'Pix' AS tipo_cobranca
     FROM pix AS p)
     UNION
@@ -71,7 +66,6 @@ const sql = `
         b.id_beneficiario,
         NULL AS id_integracao,
         b.nosso_numero,
-        NULL AS TOKEN,
         'Boleto' AS tipo_cobranca
     FROM boleto AS b)
     UNION
@@ -87,8 +81,7 @@ const sql = `
         cc.id_beneficiario,
         NULL AS id_integracao,
         NULL AS nosso_numero,
-        cc.token,
         'Cartão' AS tipo_cobranca
-    FROM cobranca_cartao AS cc);`;
+    FROM transacao_cartao AS cc);`;
 
 export default { Model, sql };

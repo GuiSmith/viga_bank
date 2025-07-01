@@ -215,6 +215,19 @@ Esses campos não podem se repetir entre beneficiários já cadastrados.
 ``` 
 #### Login `/beneficiarios/login` (POST)
 Realiza o login do beneficiário e retorna um token de autenticação
+
+Dados obrigatórios:
+ - `email`
+ - `senha`
+Exemplo de requisição:
+``` json
+{
+	"email":"guilhermessmith2014@gmail.com"
+	"senha":"ewfwjifewe"
+}
+```
+
+Exemplo de retorno
 ``` json
 {
 	"token": "eee894a4-d8fe-4fe0-87de-b589cafe282c"
@@ -458,6 +471,70 @@ Simula o pagamento de um PIX
     }
 }
 ```
+### Cobranças/Transações de cartão
+#### Criar cobrança cartão `/cobranca-cartao/` (POST)
+Cria uma cobrança via cartão de crédito
+
+Dados obrigatórios
+
+ - `tipo`
+ - `nome_titular`
+ - `cpf_titular`
+ - `bandeira`
+ - `numero_cartao`
+ - `cvv`
+ - `vencimento`
+ - `valor`
+ - `endereco`
+ - `numero_endereco`
+ - `complemento`
+ - `id_cidade`
+
+Exemplo de reposta:
+``` json
+{
+	"data_cadastro": "2025-07-01T03:36:03.341Z",
+	"id": 7,
+	"tipo": "credito",
+	"valor": "150.75",
+	"status": "R",
+	"id_cartao": 7,
+	"id_beneficiario": 1,
+	"data_ultima_transacao": "2025-07-01T03:36:03.341Z",
+	"retorno_ultima_transacao": "Pagamento aprovado no crédito"
+}
+```
+#### Listar cobranças de cartão `/cobranca-cartao/` (GET)
+Lista todas as cobranças de cartão deste beneficiário
+
+Exemplo de retorno:
+``` json
+[
+	{
+		"id": 7,
+		"tipo": "credito",
+		"valor": "150.75",
+		"status": "R",
+		"retorno_ultima_transacao": "Pagamento aprovado no crédito",
+		"data_ultima_transacao": "2025-07-01T03:36:03.341Z",
+		"data_cadastro": "2025-07-01T03:36:03.341Z",
+		"id_beneficiario": 1,
+		"id_cartao": 7
+	},
+	{
+		"id": 6,
+		"tipo": "credito",
+		"valor": "150.75",
+		"status": "A",
+		"retorno_ultima_transacao": "Instabilidade no sistema de Operadora de Cartão",
+		"data_ultima_transacao": "2025-07-01T03:36:01.413Z",
+		"data_cadastro": "2025-07-01T03:36:01.414Z",
+		"id_beneficiario": 1,
+		"id_cartao": 6
+	}
+]
+```
+
 ## Padrão de retornos
 
 ### Listagem
