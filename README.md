@@ -636,7 +636,7 @@ Deve retornar um objeto com os detalhes da cobrança de cartão de crédito
     }
 ```
 ### Boleto
-#### Criar `/boleto` (POST)
+#### Criar boleto `/boleto` (POST)
 Cria um novo boleto, com ou sem parcelamento.
 
 Campos obrigatórios:
@@ -713,7 +713,190 @@ Possíveis erros (400, 422, 500):
  - Cidade não encontrada
  - Score do Serasa abaixo de 650
  - Erro interno ao salvar no banco
+#### Listar boleto `/boleto` (GET)
+Lista todos os boletos
 
+Exemplo de retorno
+``` json
+[
+    {
+		"id": 1,
+		"valor": "150.75",
+		"data_vencimento": "2025-07-10",
+		"data_emissao": "2025-07-01",
+		"status": "A",
+		"id_parcelamento": null,
+		"numero_parcela": null,
+		"especie": "DM",
+		"nosso_numero": null,
+		"observacoes": [
+			"Pagamento referente à prestação de serviço de consultoria"
+		],
+		"razao_social_beneficiario": "Tech Solutions LTDA",
+		"cpf_cnpj_beneficiario": "12345678000192",
+		"endereco_beneficiario_rua": null,
+		"endereco_beneficiario_numero": null,
+		"endereco_beneficiario_complemento": null,
+		"endereco_beneficiario_bairro": null,
+		"endereco_beneficiario_cidade": null,
+		"endereco_beneficiario_id_cidade": 50,
+		"endereco_beneficiario_uf": null,
+		"endereco_beneficiario_cep": null,
+		"razao_social_pagador": "João da Silva ME",
+		"cpf_cnpj_pagador": "12345678000199",
+		"endereco_pagador_rua": null,
+		"endereco_pagador_numero": null,
+		"endereco_pagador_complemento": null,
+		"endereco_pagador_bairro": null,
+		"endereco_pagador_cidade": null,
+		"endereco_pagador_id_cidade": 65,
+		"endereco_pagador_uf": null,
+		"endereco_pagador_cep": null,
+		"banco_emissor": "Banco do Brasil",
+		"cod_banco": 1,
+		"agencia": 1234,
+		"numero_conta": "56789-0",
+		"convenio": 1234567,
+		"link": null,
+		"id_beneficiario": 1
+	},
+	{
+		"id": 2,
+		"valor": "150.75",
+		"data_vencimento": "2025-07-10",
+		"data_emissao": "2025-07-01",
+		"status": "A",
+		"id_parcelamento": null,
+		"numero_parcela": null,
+		"especie": "DM",
+		"nosso_numero": null,
+		"observacoes": [
+			"Pagamento referente à prestação de serviço de consultoria"
+		],
+		"razao_social_beneficiario": "Tech Solutions LTDA",
+		"cpf_cnpj_beneficiario": "12345678000192",
+		"endereco_beneficiario_rua": null,
+		"endereco_beneficiario_numero": null,
+		"endereco_beneficiario_complemento": null,
+		"endereco_beneficiario_bairro": null,
+		"endereco_beneficiario_cidade": null,
+		"endereco_beneficiario_id_cidade": 50,
+		"endereco_beneficiario_uf": null,
+		"endereco_beneficiario_cep": null,
+		"razao_social_pagador": "João da Silva ME",
+		"cpf_cnpj_pagador": "12345678000199",
+		"endereco_pagador_rua": null,
+		"endereco_pagador_numero": null,
+		"endereco_pagador_complemento": null,
+		"endereco_pagador_bairro": null,
+		"endereco_pagador_cidade": null,
+		"endereco_pagador_id_cidade": 65,
+		"endereco_pagador_uf": null,
+		"endereco_pagador_cep": null,
+		"banco_emissor": "Banco do Brasil",
+		"cod_banco": 1,
+		"agencia": 1234,
+		"numero_conta": "56789-0",
+		"convenio": 1234567,
+		"link": null,
+		"id_beneficiario": 1
+	}
+]
+```
+#### Selecionar boleto `/boleto:id` (GET)
+Seleciona um boleto dado um ID
+
+Exemplo de requisição:
+``` json
+{
+	"id": 5,
+	"valor": "150.75",
+	"data_vencimento": "2025-07-10",
+	"data_emissao": "2025-07-01",
+	"status": "A",
+	"id_parcelamento": 1,
+	"numero_parcela": null,
+	"especie": "DM",
+	"nosso_numero": "NOSSO-2759691338",
+	"observacoes": [
+		"Pagamento referente à prestação de serviço de consultoria"
+	],
+	"razao_social_beneficiario": "Tech Solutions LTDA",
+	"cpf_cnpj_beneficiario": "12345678000192",
+	"endereco_beneficiario_rua": "Rua das Flores",
+	"endereco_beneficiario_numero": "123",
+	"endereco_beneficiario_complemento": "Sala 5",
+	"endereco_beneficiario_bairro": "Centro",
+	"endereco_beneficiario_cidade": "Urupá",
+	"endereco_beneficiario_id_cidade": 50,
+	"endereco_beneficiario_uf": "RO",
+	"endereco_beneficiario_cep": "89801-000",
+	"razao_social_pagador": "João da Silva ME",
+	"cpf_cnpj_pagador": "12345678000199",
+	"endereco_pagador_rua": "Av. Brasil",
+	"endereco_pagador_numero": "456",
+	"endereco_pagador_complemento": "Ap 202",
+	"endereco_pagador_bairro": "Bela Vista",
+	"endereco_pagador_cidade": "Plácido de Castro",
+	"endereco_pagador_id_cidade": 65,
+	"endereco_pagador_uf": "AC",
+	"endereco_pagador_cep": "89802-345",
+	"banco_emissor": "Banco do Brasil",
+	"cod_banco": 1,
+	"agencia": 1234,
+	"numero_conta": "56789-0",
+	"convenio": 1234567,
+	"link": "https://drive.google.com/file/d/1LnbHqJ3-OD3EZEb-11DB9N8OnvnvpHsX/view?usp=drive_link",
+	"id_beneficiario": 1
+}
+```
+#### Cancelar boleto `/boleto:id/cancelar` (PUT)
+Cancela o boleto de ID selecionado
+
+Exemplo de retorno:
+``` json
+{
+	"id": 5,
+	"valor": "150.75",
+	"data_vencimento": "2025-07-10",
+	"data_emissao": "2025-07-01",
+	"status": "C",
+	"id_parcelamento": 1,
+	"numero_parcela": null,
+	"especie": "DM",
+	"nosso_numero": "NOSSO-2759691338",
+	"observacoes": [
+		"Pagamento referente à prestação de serviço de consultoria"
+	],
+	"razao_social_beneficiario": "Tech Solutions LTDA",
+	"cpf_cnpj_beneficiario": "12345678000192",
+	"endereco_beneficiario_rua": "Rua das Flores",
+	"endereco_beneficiario_numero": "123",
+	"endereco_beneficiario_complemento": "Sala 5",
+	"endereco_beneficiario_bairro": "Centro",
+	"endereco_beneficiario_cidade": "Urupá",
+	"endereco_beneficiario_id_cidade": 50,
+	"endereco_beneficiario_uf": "RO",
+	"endereco_beneficiario_cep": "89801-000",
+	"razao_social_pagador": "João da Silva ME",
+	"cpf_cnpj_pagador": "12345678000199",
+	"endereco_pagador_rua": "Av. Brasil",
+	"endereco_pagador_numero": "456",
+	"endereco_pagador_complemento": "Ap 202",
+	"endereco_pagador_bairro": "Bela Vista",
+	"endereco_pagador_cidade": "Plácido de Castro",
+	"endereco_pagador_id_cidade": 65,
+	"endereco_pagador_uf": "AC",
+	"endereco_pagador_cep": "89802-345",
+	"banco_emissor": "Banco do Brasil",
+	"cod_banco": 1,
+	"agencia": 1234,
+	"numero_conta": "56789-0",
+	"convenio": 1234567,
+	"link": "https://drive.google.com/file/d/1LnbHqJ3-OD3EZEb-11DB9N8OnvnvpHsX/view?usp=drive_link",
+	"id_beneficiario": 1
+}
+```
 ### Deleção
 O padrão de resposta para deleção será sempre uma mensagem no modelo a seguir
 
