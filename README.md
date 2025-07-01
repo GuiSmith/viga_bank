@@ -504,6 +504,36 @@ Exemplo de reposta:
 	"retorno_ultima_transacao": "Pagamento aprovado no crédito"
 }
 ```
+#### Listar cobranças de cartão `/cobranca-cartao/` (GET)
+Lista todas as cobranças de cartão deste beneficiário
+
+Exemplo de retorno:
+``` json
+[
+	{
+		"id": 7,
+		"tipo": "credito",
+		"valor": "150.75",
+		"status": "R",
+		"retorno_ultima_transacao": "Pagamento aprovado no crédito",
+		"data_ultima_transacao": "2025-07-01T03:36:03.341Z",
+		"data_cadastro": "2025-07-01T03:36:03.341Z",
+		"id_beneficiario": 1,
+		"id_cartao": 7
+	},
+	{
+		"id": 6,
+		"tipo": "credito",
+		"valor": "150.75",
+		"status": "A",
+		"retorno_ultima_transacao": "Instabilidade no sistema de Operadora de Cartão",
+		"data_ultima_transacao": "2025-07-01T03:36:01.413Z",
+		"data_cadastro": "2025-07-01T03:36:01.414Z",
+		"id_beneficiario": 1,
+		"id_cartao": 6
+	}
+]
+```
 
 ## Padrão de retornos
 
