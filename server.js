@@ -6,16 +6,17 @@ import cors from "cors";
 import sequelize from "./banco/banco.js";
 
 //Importação de Middlewares
-import corsMiddlware from "./middlewares/cors.js";
-import auth from "./middlewares/auth.js";
+import corsMiddlware from "./middlewares/corsMiddleware.js";
+import auth from "./middlewares/authMiddleware.js";
 
 // Importação de Rotas
 import beneficiarioRoutes from "./routes/beneficiarioRoutes.js";
-import tokenApiRoutes from './routes/tokenApiRoutes.js';
-import cidadeRoutes from './routes/cidadeRoutes.js';
-import estadoRoutes from './routes/estadoRoutes.js';
-import pixRoutes from './routes/pixRoutes.js';
-import viewsRoutes from './routes/viewsRoutes.js'; // Importa as rotas de views
+import tokenApiRoutes from "./routes/tokenApiRoutes.js";
+import cidadeRoutes from "./routes/cidadeRoutes.js";
+import estadoRoutes from "./routes/estadoRoutes.js";
+import pixRoutes from "./routes/pixRoutes.js";
+import viewsRoutes from "./routes/viewsRoutes.js"; // Importa as rotas de views
+import devolucaoRoutes from "./routes/devolucaoRoutes.js"; // Importa as rotas de devolução
 
 // Configurando express app
 const app = express();
@@ -52,11 +53,11 @@ app.get("/", (req, res) => {
 
 //Rotas
 app.use("/beneficiarios", beneficiarioRoutes);
-app.use('/token', tokenApiRoutes);
-app.use('/cidades', cidadeRoutes);
-app.use('/estados', estadoRoutes);
-app.use('/pix',pixRoutes);
-app.use('/views', viewsRoutes); // Adiciona as rotas de views
-
+app.use("/token", tokenApiRoutes);
+app.use("/cidades", cidadeRoutes);
+app.use("/estados", estadoRoutes);
+app.use("/pix", pixRoutes);
+app.use("/views", viewsRoutes); // Adiciona as rotas de views
+app.use("/devolucoes", devolucaoRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

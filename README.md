@@ -211,3 +211,8 @@ O Padrão de retorno da API para erros inesperados será SEMPRE:
     mensagem: 'Erro interno, contate o suporte'
 }
 ```
+
+# Devoluções
+
+Para informações sobre como testar e utilizar o sistema de devoluções, consulte:
+[Documentação de Testes de Devolução](docs/testes-devolucao.md)
