@@ -205,4 +205,85 @@ const criar = async (req, res) => {
     }
 };
 
-export default { criar };
+const listar = async (req, res) => {
+    try {
+
+        const boletos = await BoletoModel.findAll({
+            where: { id_beneficiario: req.beneficiario.id }
+        });
+
+        if (!boletos || boletos.length === 0) {
+            return res.status(204).send();
+        }
+
+        res.status(200).json(boletos);
+    } catch (error) {
+        console.error('Erro ao listar boletos:', error.message, error.stack);
+        res.status(500).json({ error: 'Erro ao listar boletos, contate o suporte' });
+    }
+};
+
+const selecionar = async (req, res) => {
+    try {
+        if(!req.params.id){
+            return res.status(400).json({ mensagem: 'ID do boleto não informado' });
+        }
+
+        const { id } = req.params;
+
+        if (isNaN(Number(id))) {
+            return res.status(400).json({ mensagem: 'ID do boleto deve ser um número' });
+        }
+
+        const boleto = await BoletoModel.findOne({
+            where: {
+                id,
+                id_beneficiario: req.beneficiario.id
+            }
+        });
+
+        if (!boleto) {
+            return res.status(404).json({ mensagem: 'Boleto não encontrado' });
+        }
+
+        res.status(200).json(boleto);
+    } catch (error) {
+        console.error('Erro ao selecionar boleto:', error.message, error.stack);
+        res.status(500).json({ error: 'Erro ao buscar boleto, contate o suporte' });
+    }
+};
+
+const cancelar = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            return res.status(400).json({ mensagem: 'ID do boleto não informado' });
+        }
+
+        const { id } = req.params;
+
+        if (isNaN(Number(id))) {
+            return res.status(400).json({ mensagem: 'ID do boleto deve ser um número' });
+        }
+
+        const boleto = await BoletoModel.findOne({
+            where: {
+                id,
+                id_beneficiario: req.beneficiario.id
+            }
+        });
+
+        if (!boleto) {
+            return res.status(404).json({ mensagem: 'Boleto não encontrado' });
+        }
+
+        boleto.dataValues.status = 'C';
+        await boleto.save();
+
+        res.status(200).json(boleto);
+    } catch (error) {
+        console.error('Erro ao cancelar boleto:', error.message, error.stack);
+        res.status(500).json({ error: 'Erro ao cancelar boleto, contate o suporte' });
+    }
+};
+
+export default { criar, listar, selecionar, cancelar };
