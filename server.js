@@ -18,6 +18,7 @@ import estadoRoutes from './routes/estadoRoutes.js';
 import pixRoutes from './routes/pixRoutes.js';
 import viewsRoutes from './routes/viewsRoutes.js'; // Importa as rotas de views
 import transacaoCartaoRoutes from './routes/transacaoCartaoRoutes.js'; // Importa as rotas de cobrança com cartão
+import boletoRoutes from './routes/boletoRoutes.js';
 
 // Configurando express app
 const app = express();
@@ -61,5 +62,6 @@ app.use('/estados', estadoRoutes);
 app.use('/pix',pixRoutes);
 app.use('/views', viewsRoutes); // Adiciona as rotas de views
 app.use('/cobranca-cartao', transacaoCartaoRoutes); // Adiciona as rotas de cobrança com cartão
+app.use('/boleto', boletoRoutes);
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

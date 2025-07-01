@@ -104,12 +104,16 @@ const BoletoModel = banco.define('boleto', {
         allowNull: false
     },
     numero_conta: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     convenio: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    link: {
+        type: DataTypes.TEXT,
+        allowNull: true,
     },
 
     // Relacionamento
@@ -119,41 +123,38 @@ const BoletoModel = banco.define('boleto', {
     }
 });
 
-BoletoModel.beforeCreate((boleto, options) => {
-    const { transaction, models } = options;
+BoletoModel.beforeCreate(async (boleto, options) => {
+    const { transaction } = options;
 
-    if(boleto.endereco_beneficiario_id_cidade){
-        const cidadeBeneficiario = CidadeModel.findByPk(boleto.endereco_beneficiario_id_cidade);
-
-        if(cidadeBeneficiario){
+    if (boleto.endereco_beneficiario_id_cidade) {
+        const cidadeBeneficiario = await CidadeModel.findByPk(boleto.endereco_beneficiario_id_cidade, { transaction });
+        if (cidadeBeneficiario) {
             boleto.endereco_beneficiario_cidade = cidadeBeneficiario.nome;
 
-            if(cidadeBeneficiario.id_estado){
-                const estadoBeneficiario = EstadoModel.findByPk(cidadeBeneficiario.id_estado);
-
-                if(estadoBeneficiario){
-                    boleto.endereco_beneficiario_uf = estadoBeneficiario.sigla
+            if (cidadeBeneficiario.id_estado) {
+                const estadoBeneficiario = await EstadoModel.findByPk(cidadeBeneficiario.id_estado, { transaction });
+                if (estadoBeneficiario) {
+                    boleto.endereco_beneficiario_uf = estadoBeneficiario.sigla;
                 }
             }
         }
     }
 
-    if(boleto.endereco_pagador_id_cidade){
-        const cidadePagador = CidadeModel.findByPk(boleto.endereco_pagador_id_cidade);
-
-        if(cidadePagador){
+    if (boleto.endereco_pagador_id_cidade) {
+        const cidadePagador = await CidadeModel.findByPk(boleto.endereco_pagador_id_cidade, { transaction });
+        if (cidadePagador) {
             boleto.endereco_pagador_cidade = cidadePagador.nome;
 
-            if(cidadePagador.id_estado){
-                const estadoPagador = EstadoModel.findByPk(cidadePagador.id_estado);
-
-                if(estadoPagador){
-                    boleto.endereco_pagador_uf = estadoPagador.sigla
+            if (cidadePagador.id_estado) {
+                const estadoPagador = await EstadoModel.findByPk(cidadePagador.id_estado, { transaction });
+                if (estadoPagador) {
+                    boleto.endereco_pagador_uf = estadoPagador.sigla;
                 }
             }
         }
     }
 });
+
 
 BoletoModel.associate = (models) => {
     BoletoModel.belongsTo(models.Beneficiario, {
